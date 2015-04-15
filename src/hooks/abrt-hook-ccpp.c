@@ -628,37 +628,30 @@ int main(int argc, char** argv)
 
         // Disabled for now: /proc/PID/smaps tends to be BIG,
         // and not much more informative than /proc/PID/maps:
-        //copy_file(source_filename, dest_filename, 0640);
-        //chown(dest_filename, dd->dd_uid, dd->dd_gid);
+        //copy_file_ext(source_filename, dest_filename, 0640, dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL);
 
         strcpy(source_filename + source_base_ofs, "maps");
         strcpy(dest_base, FILENAME_MAPS);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        copy_file_ext(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE, dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL);
 
         strcpy(source_filename + source_base_ofs, "limits");
         strcpy(dest_base, FILENAME_LIMITS);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        copy_file_ext(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE, dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL);
 
         strcpy(source_filename + source_base_ofs, "cgroup");
         strcpy(dest_base, FILENAME_CGROUP);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        copy_file_ext(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE, dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL);
 
         strcpy(source_filename + source_base_ofs, "mountinfo");
         strcpy(dest_base, FILENAME_MOUNTINFO);
-        copy_file(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE);
-        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        copy_file_ext(source_filename, dest_filename, DEFAULT_DUMP_DIR_MODE, dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL);
 
         strcpy(dest_base, FILENAME_OPEN_FDS);
         strcpy(source_filename + source_base_ofs, "fd");
-        if (dump_fd_info(dest_filename, source_filename) == 0)
-            IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dump_fd_info_ext(dest_filename, source_filename, dd->dd_uid, dd->dd_gid);
 
         strcpy(dest_base, FILENAME_NAMESPACES);
-        if (dump_namespace_diff(dest_filename, 1, pid))
-            IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+        dump_namespace_diff_ext(dest_filename, 1, pid, dd->dd_uid, dd->dd_gid);
 
         free(dest_filename);
 
@@ -799,6 +792,8 @@ int main(int argc, char** argv)
          * ! No other errors should cause removal of the user core !
          */
 
+/* Because of #1211835 and #1126850 */
+#if 0
         /* Save JVM crash log if it exists. (JVM's coredump per se
          * is nearly useless for JVM developers)
          */
@@ -832,6 +827,7 @@ int main(int argc, char** argv)
                 close(src_fd);
             }
         }
+#endif
 
         /* Perform crash-time unwind of the guilty thread. */
         if (tid > 0 && setting_CreateCoreBacktrace)
