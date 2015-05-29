@@ -65,7 +65,7 @@ msgstr " "
 
 #: ../src/Gui/ccgui.glade.h:2
 msgid "(C) 2009 Red Hat, Inc."
-msgstr "(C) 2009 Red Hat, Inc."
+msgstr "(C) 2009n Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:240
 msgid "<b>Not reported!</b>"
@@ -136,7 +136,7 @@ msgstr "_Edit"
 
 #: ../src/Gui/ccgui.glade.h:18
 msgid "_File"
-msgstr "_Fail"
+msgstr "_Fayl"
 
 #: ../src/Gui/ccgui.glade.h:19
 msgid "_Help"
@@ -161,11 +161,11 @@ msgstr "Deit"
 
 #: ../src/Gui/CCMainWindow.py:91
 msgid "Crash Rate"
-msgstr "Crash Rate"
+msgstr "Kräsh Reit"
 
 #: ../src/Gui/CCMainWindow.py:93
 msgid "User"
-msgstr "Yusā  "
+msgstr "Yusā"
 
 #: ../src/Gui/CCMainWindow.py:178
 #, fuzzy, python-format
